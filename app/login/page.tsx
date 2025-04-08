@@ -18,13 +18,6 @@ import {
 import { MessageSquare } from "lucide-react";
 import { login } from "@/lib/auth-client"; // Import from client utilities
 
-// export default function LoginPage() {
-  
-
-//   // Rest of the component remains the same
-//   // ...
-// }
-
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,14 +32,16 @@ export default function LoginPage() {
 
     try {
       const data = await login(email, password);
+      console.log("Login response:", data);
 
-      if (!data.message || data.message !== "Login successful") {
+      if (data.message === "Login successful") {
+        // Force a hard refresh to ensure cookies are properly set
+        window.location.href = "/dashboard";
+      } else {
         throw new Error(data.message || "Login failed");
       }
-
-      // Redirect to dashboard on successful login
-      router.push("/dashboard");
     } catch (err) {
+      console.error("Login error:", err);
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setIsLoading(false);

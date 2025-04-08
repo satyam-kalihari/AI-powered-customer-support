@@ -1,3 +1,4 @@
+// app/api/auth/login/route.ts
 import type { NextRequest } from "next/server";
 import clientPromise from "@/lib/mongodb";
 import { verifyPassword, generateToken, setAuthCookie } from "@/lib/auth";
@@ -41,7 +42,7 @@ export async function POST(req: NextRequest) {
     // Generate token
     const token = generateToken(user);
 
-    // Set auth cookie using Next.js cookies() API
+    // Set auth cookie directly - not as async operation
     setAuthCookie(token);
 
     // Return success response
